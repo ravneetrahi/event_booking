@@ -2,7 +2,6 @@
 
 ## Setup
 
-```bash
 git clone https://github.com/ravneetrahi/event_booking.git
 cd event_booking
 composer install
@@ -12,5 +11,5 @@ php artisan migrate
 php artisan serve
 
 
-## PostMan Collection 
+##  PostMan Collection 
 FOlder : Postman_Collection  contains the coolection that can be imported in post man to execute the apis.
