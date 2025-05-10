@@ -9,6 +9,9 @@ A Laravel-based RESTful API for managing events, attendees, and bookings.
 - Booking system
 - RESTful API architecture
 
+##  PostMan Collection 
+Folder : Postman_Collection
+
 ## 🛠️ Installation
 
 Follow these steps to set up the project locally:
@@ -36,5 +39,4 @@ php artisan migrate
 php artisan serve
 
 
-##  PostMan Collection 
-Folder : Postman_Collection  contains the coolection that can be imported in post man to execute the apis.
+
