@@ -5,13 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Event;
 use App\Models\Attendee;
+use App\Services\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
+    protected $bookingService;
     /**
+     * Inject BookingService into the controller.
+     *
+     * @param BookingService $bookingService
+     */
+    public function __construct(BookingService $bookingService)
+    {
+        $this->bookingService = $bookingService;
+    }
+     /**
      * Store a newly created booking in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -21,32 +35,20 @@ class BookingController extends Controller
             'attendee_id' => 'required|exists:attendees,id',
         ]);
 
-        // Check if the event has available capacity
-        $event = Event::find($validated['event_id']);
-        if ($event->bookings->count() >= $event->capacity) {
-            throw ValidationException::withMessages([
-                'event_id' => 'The event has reached its full capacity.'
-            ]);
+        try {
+            // Delegate the creation of the booking to the service
+            $booking = $this->bookingService->createBooking($validated);
+
+            return response()->json([
+                'message' => 'Booking created successfully.',
+                'data' => $booking
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors()
+            ], 400);
         }
-
-        // Check if the attendee has already booked the event
-        $existingBooking = Booking::where('event_id', $validated['event_id'])
-                                  ->where('attendee_id', $validated['attendee_id'])
-                                  ->first();
-
-        if ($existingBooking) {
-            throw ValidationException::withMessages([
-                'attendee_id' => 'The attendee has already booked this event.'
-            ]);
-        }
-
-        // Create the booking
-        $booking = Booking::create($validated);
-
-        return response()->json([
-            'message' => 'Booking created successfully.',
-            'data' => $booking
-        ], 201);
     }
 
     /**
