@@ -2,6 +2,73 @@
 
 A Laravel-based RESTful API for managing events, attendees, and bookings.
 
+## 🏗️ Architecture Overview
+
+### Conceptual Breakdown
+
+#### 1. **Frontend (e.g., Web or Mobile Application)**
+   - Makes HTTP requests to the API for interacting with the backend.
+
+#### 2. **API Layer (Controllers)**
+   - **BookingController**: Handles booking requests like creating a booking, retrieving bookings for events or attendees, and deleting bookings.
+   - **Validation**: Ensures the data sent by the client is correct (e.g., checks if the event is full or if the attendee has already booked the event).
+
+#### 3. **Application Layer (Models and Business Logic)**
+   - **Event Model**: Represents events and handles the relationship to bookings (capacity, event details).
+   - **Attendee Model**: Represents attendees and manages their bookings.
+   - **Booking Model**: Represents the booking relationship between an attendee and an event. It ensures that a booking isn’t created if it violates business rules (e.g., if the attendee is already booked or if the event is at capacity).
+
+#### 4. **Database Layer (Database Tables)**
+   - **events**: Contains data related to the event (name, description, start time, end time, capacity).
+   - **attendees**: Contains data related to the attendee (name, email, etc.).
+   - **bookings**: Stores the booking relationship between attendees and events (event_id, attendee_id).
+
+### Architecture Diagram
+
+```plaintext
+   +-----------------------+           +------------------------+
+   |                       |           |                        |
+   |    Frontend (Client)  +---------->+    API Layer (Laravel) |
+   |                       |           |                        |
+   +-----------------------+           +------------------------+
+                                                |
+                                                |
+                                                v
+                            +-----------------------------------+
+                            |                                   |
+                            |     BookingController (API)       |
+                            |                                   |
+                            +-----------------------------------+
+                                                |
+                                                v
+                +-----------------------+    +--------------------+
+                |                       |    |                    |
+                |   Event Model (Eloquent) +--->+ Event Database    |
+                |                       |    | (events table)     |
+                +-----------------------+    +--------------------+
+                          |
+                          v
+               +---------------------+         +-----------------------+
+               |                     |         |                       |
+               |  Attendee Model     +-------->+ Attendee Database     |
+               |  (Eloquent)         |         | (attendees table)     |
+               +---------------------+         +-----------------------+
+                          |
+                          v
+               +---------------------+
+               |                     |
+               |   Booking Model     |
+               |   (Eloquent)        |
+               +---------------------+
+                          |
+                          v
+               +---------------------+
+               |                     |
+               |   Bookings Database |
+               |   (bookings table)  |
+               +---------------------+
+
+
 ## 🚀 Features
 
 - Event creation and management
@@ -44,6 +111,8 @@ php artisan migrate
 
 # Start the development server
 php artisan serve
+
+
 
 
 
