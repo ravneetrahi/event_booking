@@ -1,15 +1,40 @@
-# Event Booking API
+# Event Booking Application
 
-## Setup
+A Laravel-based RESTful API for managing events, attendees, and bookings.
 
+## 🚀 Features
+
+- Event creation and management
+- Attendee registration
+- Booking system
+- RESTful API architecture
+
+## 🛠️ Installation
+
+Follow these steps to set up the project locally:
+
+```bash
+# Clone the repository
 git clone https://github.com/ravneetrahi/event_booking.git
+
+# Navigate into the project directory
 cd event_booking
+
+# Install PHP dependencies
 composer install
+
+# Copy the environment configuration
 cp .env.example .env
+
+# Generate the application key
 php artisan key:generate
+
+# Run database migrations
 php artisan migrate
+
+# Start the development server
 php artisan serve
 
 
 ##  PostMan Collection 
-FOlder : Postman_Collection  contains the coolection that can be imported in post man to execute the apis.
+Folder : Postman_Collection  contains the coolection that can be imported in post man to execute the apis.
